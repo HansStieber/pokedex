@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#pokemon {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+}
+
+.pokemon {
+    width: 280px;
+    height: 150px;
+    border: 1px solid black;
+}
+
+.bg-grass {
+    background-color: rgb(73,208,176);
+}
+
+.pokemon img {
+    width: 80px;
+    object-fit: cover;
+}
