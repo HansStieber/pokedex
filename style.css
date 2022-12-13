@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+.d-none {
+    display: none;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -10,17 +14,71 @@ body {
     font-family: 'Manrope', sans-serif;
 }
 
+header {
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    height: 80px;
+    width: 100%;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    box-shadow: 0px 1px 4px 0px #000000;
+    background-color: #f6f6f6;
+}
+
+header div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1150px;
+    margin: 0 60px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    width: 30px;
+    transform: rotate(90deg);
+    margin-right: 10px;
+}
+
+#search {
+    display: inline-block;
+    height: 25px;
+    width: 200px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.background {
+    position: fixed;
+    height: 110%;
+    width: 100%;
+    background-image: url(img/pokeball.png);
+    background-position: center;
+    top: -60px;
+    background-repeat: no-repeat;
+    filter: invert(0.1);
+}
+
 #pokemon {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 30px;
     max-width: 1350px;
+    margin-top: 30px;
 }
 
 .pokemon {
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
     width: 280px;
     height: 180px;
     padding: 20px 15px;
@@ -33,33 +91,14 @@ body {
 
 .pokemon:hover {
     cursor: pointer;
-    scale: 1.025;
+    scale: 1.01;
     transition: all 225ms ease-in-out;
 }
 
 .pokemon span {
-    opacity: 0.95;
+    margin-bottom: 10px;
 }
 
-.bg-grass {
-    background-color: rgb(73,208,176);
-}
-
-.bg-fire {
-    background-color: rgb(251,108,108);
-}
-
-.bg-water {
-    background-color: rgb(118,189,254);
-}
-
-.bg-bug {
-    background-color: rgb(118 226 118);
-}
-
-.bg-normal {
-    background-color: rgb(242, 212, 174);
-}
 
 .pokemon-img {
     position: absolute;
@@ -74,5 +113,59 @@ body {
     bottom: -10px;
     right: -10px;
     width: 160px;
-    opacity: 0.5;
+    opacity: 0.4;
+}
+
+.type-container {
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 5px 20px;
+    margin-top: 5px;
+    display: inline-block;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.bg-grass {
+    background-color: rgb(73, 208, 176);
+}
+
+.bg-fire {
+    background-color: rgb(251, 108, 108);
+}
+
+.bg-water {
+    background-color: rgb(118, 189, 254);
+}
+
+.bg-bug {
+    background-color: rgb(118 226 118);
+}
+
+.bg-normal {
+    background-color: rgb(242, 212, 174);
+}
+
+.loader-container {
+    z-index: -1;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.loader img {
+    width: 100px;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

@@ -18,14 +18,25 @@
 </head>
 
 <body onload="checkEndOfPage()">
-
-    <div>
-        <input id="search" onkeydown="filterPokemon()">
+    <div class="background">
     </div>
+
+    <header>
+        <div>
+            <h1>Pokédex</h1>
+            <div class="search-container">
+                <img class="search-icon" src="img/search.png">
+                <input id="search" onkeydown="filterPokemon()">
+            </div>
+        </div>
+    </header>
 
     <div id="pokemon">
     </div>
 
+    <div id="loader-container" class="loader-container">
+        <div id="loader" class="loader d-none"><img src="img/pokeball-icon.png"></div>
+    </div>
 </body>
 
 </html>
