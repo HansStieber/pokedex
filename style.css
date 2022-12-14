@@ -3,7 +3,7 @@
 }
 
 .d-none {
-    display: none;
+    display: none !important;
 }
 
 body {
@@ -13,6 +13,31 @@ body {
     margin: 0;
     font-family: 'Manrope', sans-serif;
 }
+
+h2 {
+    display: inline-block;
+    margin: 0;
+}
+
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgb(210, 210, 210);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    border: 2px solid rgb(210, 210, 210);
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/*----------header----------*/
 
 header {
     z-index: 5;
@@ -54,6 +79,8 @@ header div:first-child {
     border-radius: 5px;
 }
 
+/*----------Hauptinhalt - geladene Pokemon----------*/
+
 .background {
     position: fixed;
     height: 110%;
@@ -71,7 +98,7 @@ header div:first-child {
     flex-wrap: wrap;
     gap: 30px;
     max-width: 1350px;
-    margin-top: 30px;
+    padding: 30px;
 }
 
 .pokemon {
@@ -125,6 +152,8 @@ header div:first-child {
     font-size: 16px;
 }
 
+/*----------Klassen mit Farben der Pokemon----------*/
+
 .bg-grass {
     background-color: rgb(73, 208, 176);
 }
@@ -144,6 +173,56 @@ header div:first-child {
 .bg-normal {
     background-color: rgb(242, 212, 174);
 }
+
+.bg-poison {
+    background-color: rgb(246, 47, 246);
+}
+
+.bg-electric {
+    background-color: rgb(255, 217, 0);
+}
+
+.bg-ground {
+    background-color: rgb(184, 149, 103);
+}
+
+.bg-fairy {
+    background-color: rgb(255, 200, 200);
+}
+
+.bg-fighting {
+    background-color: rgb(147, 45, 45);
+}
+
+.bg-psychic {
+    background-color: rgb(156, 0, 156);
+}
+
+.bg-rock {
+    background-color: grey;
+}
+
+.bg-ghost {
+    background-color: rgb(72, 65, 65);
+}
+
+.bg-ice {
+    background-color: rgb(184, 184, 255);
+}
+
+.bg-dragon {
+    background-color: rgb(157, 201, 124);
+}
+
+.bg-dark {
+    background-color: black;
+}
+
+.bg-steel {
+    background-color: lightgrey;
+}
+
+/*----------Pokemon-Ball Lade-Icon----------*/
 
 .loader-container {
     z-index: -1;
@@ -168,4 +247,122 @@ header div:first-child {
     100% {
         transform: rotate(360deg);
     }
+}
+
+/*----------Pokemon in Detailansicht - Stats----------*/
+
+.poke-stats-bg {
+    z-index: 8;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transform: translateY(-100vh);
+    background-color: rgba(0, 0, 0, 0.0);
+    backdrop-filter: unset;
+    transition: background-color 225ms linear;
+    transition: backdrop-filter 225ms linear;
+}
+
+.show-stats-bg {
+    transform: translateY(0vh);
+    backdrop-filter: blur(4px) !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.poke-stats-container {
+    z-index: 9;
+    position: fixed;
+    top: 0;
+    transform: translateY(-100%);
+    overflow: hidden;
+    transition: all 225ms linear;
+    width: 380px;
+    height: 100%;
+    opacity: 0;
+    border-radius: 25px;
+    color: white;
+    box-shadow: 2px 2px 8px 0px #000000;
+}
+
+.show-stats {
+    transform: translateY(0);
+    opacity: 1 !important;
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 50px 30px 20px 30px;
+    font-size: 22px;
+}
+
+#stat-type-container {
+    margin: 0 30px;
+    font-weight: bold;
+}
+
+#stat-type-container div {
+    margin-bottom: 5px;
+}
+
+.stats-pokeball {
+    position: absolute;
+    right: -20px;
+    bottom: 390px;
+    width: 200px;
+    opacity: 0.4;
+}
+
+.stats-space {
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    height: 55%;
+    width: 100%;
+    border-radius: 25px;
+}
+
+.stat-img-container {
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+    transition: all 225ms linear;
+}
+
+.show-stat-img {
+    transform: translateY(0);
+}
+
+.stat-img {
+    width: 220px;
+    transform: translateY(-90px);
+}
+
+.slide-left {
+    z-index: 10;
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    width: 30px;
+}
+
+.slide-right {
+    z-index: 10;
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    width: 30px;
+}
+
+.slide-left:hover, .slide-right:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all 225ms ease-in-out;
 }

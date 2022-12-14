@@ -17,7 +17,7 @@
 
 </head>
 
-<body onload="checkEndOfPage()">
+<body id="body" onload="checkEndOfPage()">
     <div class="background">
     </div>
 
@@ -37,6 +37,28 @@
     <div id="loader-container" class="loader-container">
         <div id="loader" class="loader d-none"><img src="img/pokeball-icon.png"></div>
     </div>
+
+    <div id="poke-stats-bg" class="poke-stats-bg">
+    </div>
+
+    <div id="poke-stats-container" class="poke-stats-container">
+        <div class="stats-header">
+            <h2 id="species"></h2>
+            <span>#<b id="id-container"></b></span>
+        </div>
+        <div id="stat-type-container">
+        </div>
+        <img class="stats-pokeball" src="img/pokeball.png">
+        <div id="stats-space" class="stats-space">
+        </div>
+    </div>
+    <div id="stat-img-container" class="stat-img-container" onclick="closeStats()">
+        <img class="back-img d-none" src="img/back.png" onclick="closeStats()">
+        <img id="stat-img" class="stat-img" src="">
+    </div>
+
+    <img id="slide-left" class="slide-left d-none" src="img/arrow-left.png" onclick="slideLeft()">
+    <img id="slide-right" class="slide-right d-none" src="img/arrow-right.png" onclick="slideRight()">
 </body>
 
 </html>
