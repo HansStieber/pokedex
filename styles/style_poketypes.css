@@ -1,0 +1,69 @@
+/*----------Klassen mit Farben der Pokemon nach Typ----------*/
+
+.bg-grass {
+    background-color: rgb(73, 208, 176);
+}
+
+.bg-fire {
+    background-color: rgb(251, 108, 108);
+}
+
+.bg-water {
+    background-color: rgb(118, 189, 254);
+}
+
+.bg-bug {
+    background-color: rgb(118 226 118);
+}
+
+.bg-normal {
+    background-color: rgb(242, 212, 174);
+}
+
+.bg-poison {
+    background-color: rgb(246, 47, 246);
+}
+
+.bg-electric {
+    background-color: rgb(255, 217, 0);
+}
+
+.bg-ground {
+    background-color: rgb(184, 149, 103);
+}
+
+.bg-fairy {
+    background-color: rgb(255, 200, 200);
+}
+
+.bg-fighting {
+    background-color: rgb(147, 45, 45);
+}
+
+.bg-psychic {
+    background-color: rgb(156, 0, 156);
+}
+
+.bg-rock {
+    background-color: grey;
+}
+
+.bg-ghost {
+    background-color: rgb(72, 65, 65);
+}
+
+.bg-ice {
+    background-color: rgb(184, 184, 255);
+}
+
+.bg-dragon {
+    background-color: rgb(157, 201, 124);
+}
+
+.bg-dark {
+    background-color: black;
+}
+
+.bg-steel {
+    background-color: lightgrey;
+}

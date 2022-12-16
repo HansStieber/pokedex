@@ -1,0 +1,85 @@
+/*----------Grundelemente und besondere Klassen - responsiv---------*/
+
+@media (max-width: 420px) {
+    
+    h1 {
+        font-size: 22px;
+    }
+}
+
+
+/*----------header - responsiv---------*/
+
+@media (max-width: 420px) {
+    
+    #search {
+        width: 100px;
+        height: 20px;
+    }
+
+    .search-icon {
+        width: 20px;
+    }
+
+    header {
+        height: 50px;
+    }
+
+    header div:first-child {
+        margin: 0 20px;
+    }
+}
+
+
+/*----------Hauptinhalt - geladene Pokemon - responsiv---------*/
+
+@media (max-width: 992px) {
+    
+    #pokemon {
+        gap: 20px;
+        padding: 20px 10px;
+    }
+}
+
+@media (max-width: 767.9px) {
+    
+    #pokemon {
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .pokemon {
+        height: 160px;
+    }
+}
+
+@media (max-width: 420px) {
+    
+    #pokemon {
+        gap: 10px;
+        padding: 10px 0;
+    }
+}
+
+
+/*----------Pokemon in Detailansicht - Stats -responsive----------*/
+
+@media (max-width: 420px) {
+    
+    .poke-stats-container {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 359px) {
+
+    .stat-img {
+        width: 150px;
+        transform: translateY(-60px);
+    }
+
+    .stats-pokeball {
+        transform: translateY(-65px);
+    }
+}

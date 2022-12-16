@@ -101,7 +101,7 @@ function removeScrollEvent() {
 //Anzeigen des Loaders
 function showLoader() {
     document.getElementById('loader').classList.remove('d-none');
-    document.getElementById('loader-container').style = 'z-index: 5;';
+    document.getElementById('loader-container').style = 'z-index: 99;';
 }
 
 
@@ -158,6 +158,9 @@ function openStats(id) {
     loadNameCapizalized(id);
     addPokemonNumber(id);
     renderStatsTypes(loadedPokemon[id - 1]);
+    loadAbout(loadedPokemon[id - 1]);
+    loadBaseStats(loadedPokemon[id - 1]);
+    loadMoves(loadedPokemon[id - 1]);
 }
 
 
@@ -179,7 +182,6 @@ function loadStatsContainer(id) {
 //Laden des Image des ausgewählten Pokemon
 function loadPokemonImg(id) {
     document.getElementById('stat-img').src = `${loadedPokemon[id - 1]['sprites']['other']['official-artwork']['front_default']}`;
-    document.getElementById('stat-img-container').classList.add('show-stat-img');
 }
 
 
@@ -200,12 +202,92 @@ function addPokemonNumber(id) {
 }
 
 
+//Öffnen der Stat section about
+function openAbout() {
+    document.getElementById('about-selector').classList.add('selected-info');
+    document.getElementById('base-stats-selector').classList.remove('selected-info');
+    document.getElementById('moves-selector').classList.remove('selected-info');
+
+    document.getElementById('about').classList.remove('d-none');
+    document.getElementById('base-stats').classList.add('d-none');
+    document.getElementById('moves').classList.add('d-none');
+}
+
+
+//Laden der Stat section about
+function loadAbout(pokemon) {
+    document.getElementById('base-experience').innerHTML = `${pokemon['base_experience']}`;
+    let heightt = pokemon['height'];
+    let height = heightt / 10;
+    document.getElementById('height').innerHTML = height;
+    let weightt = pokemon['weight'];
+    let weight = weightt / 10;
+    document.getElementById('weight').innerHTML = weight;
+    document.getElementById('abilities').innerHTML = '';
+    for (let i = 0; i < pokemon['abilities'].length; i++) {
+        let ability = pokemon['abilities'][i];
+        document.getElementById('abilities').innerHTML += `
+        <span>${ability['ability']['name']}</span>
+        `;
+    }
+}
+
+
+//Öffnen der Stat section base stats
+function openBaseStats() {
+    document.getElementById('about-selector').classList.remove('selected-info');
+    document.getElementById('base-stats-selector').classList.add('selected-info');
+    document.getElementById('moves-selector').classList.remove('selected-info');
+
+    document.getElementById('about').classList.add('d-none');
+    document.getElementById('base-stats').classList.remove('d-none');
+    document.getElementById('moves').classList.add('d-none');
+}
+
+
+//Laden der Stat section Base Stats
+function loadBaseStats(pokemon) {
+    for (let i = 0; i < pokemon['stats'].length; i++) {
+
+        let stat = pokemon['stats'][i]['base_stat'];
+        document.getElementById('base-stat' + i).style = `width: ${stat}px;`
+        document.getElementById('stat-number' + i).innerHTML = `${stat}`;
+
+        document.getElementById('base-stat' + i).className = '';
+        document.getElementById('base-stat' + i).classList.add('actual-progress');
+        let type = pokemon['types'][0]['type']['name'];
+        document.getElementById('base-stat' + i).classList.add('bg-' + type);
+    }
+}
+
+//Öffnen der Stat section Moves
+function openMoves() {
+    document.getElementById('about-selector').classList.remove('selected-info');
+    document.getElementById('base-stats-selector').classList.remove('selected-info');
+    document.getElementById('moves-selector').classList.add('selected-info');
+
+    document.getElementById('about').classList.add('d-none');
+    document.getElementById('base-stats').classList.add('d-none');
+    document.getElementById('moves').classList.remove('d-none');
+}
+
+
+//Laden der Stat section Moves
+function loadMoves(pokemon) {
+    document.getElementById('moves').innerHTML = '';
+    for (let i = 1; i < pokemon['moves'].length; i++) {
+        let move = pokemon['moves'][i]['move']['name'];
+        document.getElementById('moves').innerHTML += `
+    <div class="move">${move}</div>
+    `;
+    }
+}
+
 //Schließen des Statusfenster eines Pokemon
 function closeStats() {
     document.getElementById('poke-stats-container').classList.remove('show-stats');
     document.getElementById('poke-stats-bg').classList.remove('show-stats-bg');
     document.getElementById('body').classList.remove('overflow-hidden');
-    document.getElementById('stat-img-container').classList.remove('show-stat-img');
     hideArrows();
 }
 
@@ -227,9 +309,15 @@ function hideArrows() {
 
 
 //Zum nächsten Pokemon wechseln
-function slideRight() {
-    currentId++;
-    openStats(currentId);
+async function slideRight() {
+    if (currentId == loadedPokemon.length) {
+        await loadPokemon();
+        currentId++;
+        openStats(currentId);
+    } else {
+        currentId++;
+        openStats(currentId);
+    }
 }
 
 
@@ -254,7 +342,7 @@ function renderPokemonHtml(newPokemon, pokemonCap) {
             <span>${pokemonCap}</span>
         <div id="types${newPokemon['id']}">
         </div>
-        <img class="pokeball-img" src="img/pokeball.png">
+        <img class="pokeball-img" src="img/pokeball.jpg">
         <img class="pokemon-img" src="${newPokemon['sprites']['other']['official-artwork']['front_default']}">
     </div>
     `;

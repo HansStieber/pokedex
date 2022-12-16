@@ -6,15 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
+    <link rel="icon" href="img/pokeball-icon.png">
 
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <link rel="stylesheet" href="./styles/style_poketypes.css">
+    <link rel="stylesheet" href="./styles/style_responsive.css">
+    
+    <script src="./scripts/script.js"></script>
 </head>
 
 <body id="body" onload="checkEndOfPage()">
@@ -26,7 +25,7 @@
             <h1>Pokédex</h1>
             <div class="search-container">
                 <img class="search-icon" src="img/search.png">
-                <input id="search" onkeydown="filterPokemon()">
+                <input id="search" onkeyup="filterPokemon()">
             </div>
         </div>
     </header>
@@ -38,7 +37,7 @@
         <div id="loader" class="loader d-none"><img src="img/pokeball-icon.png"></div>
     </div>
 
-    <div id="poke-stats-bg" class="poke-stats-bg">
+    <div id="poke-stats-bg" class="poke-stats-bg" onclick="closeStats()">
     </div>
 
     <div id="poke-stats-container" class="poke-stats-container">
@@ -48,17 +47,103 @@
         </div>
         <div id="stat-type-container">
         </div>
-        <img class="stats-pokeball" src="img/pokeball.png">
+        <img class="stats-pokeball" src="img/pokeball.jpg">
         <div id="stats-space" class="stats-space">
+            <img id="slide-left" class="slide-left d-none" src="img/arrow-left.png" onclick="slideLeft()">
+            <img id="slide-right" class="slide-right d-none" src="img/arrow-right.png" onclick="slideRight()">
+            <div class="stat-space-header">
+                <div id="about-selector" class="selected-info" onclick="openAbout()">About</div>
+                <div id="base-stats-selector" onclick="openBaseStats()">Base Stats</div>
+                <div id="moves-selector" onclick="openMoves()">Moves</div>
+            </div>
+            <div id="info" class="stat-space-main">
+                <div id="about">
+                    <table>
+                        <tr>
+                            <td>Base xp</td>
+                            <td id="base-experience"></td>
+                        </tr>
+                        <tr>
+                            <td>Height</td>
+                            <td><span id="height"></span> m</td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td><span id="weight"></span> kg</td>
+                        </tr>
+                        <tr>
+                            <td>Abilities</td>
+                            <td id="abilities"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="base-stats" class="d-none">
+                    <table>
+                        <tr>
+                            <td>HP</td>
+                            <td>
+                                <div id="stat-number0"></div>
+                                <div class="base-progress">
+                                    <div class="actual-progress" id="base-stat0"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Attack</td>
+                            <td>
+                                <div id="stat-number1"></div>
+                                <div class="base-progress">
+                                    <div class="actual-progress" id="base-stat1"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Defense</td>
+                            <td>
+                                <div id="stat-number2"></div>
+                                <div class="base-progress">
+                                    <div class="actual-progress" id="base-stat2"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Special-Attack</td>
+                            <td>
+                                <div id="stat-number3"></div>
+                                <div class="base-progress">
+                                    <div class="actual-progress" id="base-stat3"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Special-Defense</td>
+                            <td>
+                                <div id="stat-number4"></div>
+                                <div class="base-progress">
+                                    <div class="actual-progress" id="base-stat4"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Speed</td>
+                            <td>
+                                <div id="stat-number5"></div>
+                                <div class="base-progress">
+                                    <div class="actual-progress" id="base-stat5"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="moves" class="d-none">
+
+                </div>
+            </div>
         </div>
-    </div>
-    <div id="stat-img-container" class="stat-img-container" onclick="closeStats()">
-        <img class="back-img d-none" src="img/back.png" onclick="closeStats()">
         <img id="stat-img" class="stat-img" src="">
+        <img class="back-img" src="img/back.png" onclick="closeStats()">
     </div>
 
-    <img id="slide-left" class="slide-left d-none" src="img/arrow-left.png" onclick="slideLeft()">
-    <img id="slide-right" class="slide-right d-none" src="img/arrow-right.png" onclick="slideRight()">
 </body>
 
 </html>
