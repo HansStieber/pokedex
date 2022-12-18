@@ -5,7 +5,7 @@ let next = [];
 let currentId;
 
 
-//Laden von 20 Pokemon nach laden des bodys und anschließend nach scrollen zum unteren Ende der Seite
+//Laden von 20 Pokemon nach laden des bodys (onload) und anschließend nach scrollen zum unteren Ende der Seite (eventlistner)
 function checkEndOfPage() {
     let scrollPos = window.innerHeight + window.scrollY;
     let scrollLimitBottom = document.body.scrollHeight - 200;
@@ -40,7 +40,7 @@ async function loadNewPokemonBaseData() {
     let newPokemon = await response.json();
     defineNextPokemon(newPokemon);                  //festlegen der nächsten 20 Pokemon
     let pokemon = newPokemon['results'];
-    addToCurrentPokemon(pokemon);                    //Hinzufügen zum Array loadedPokemon
+    addToCurrentPokemon(pokemon);                    //Hinzufügen zum Array CurrentPokemon
 }
 
 
@@ -49,6 +49,15 @@ function defineNextPokemon(newPokemon) {
     let newNext = newPokemon['next'].split('?')[1];     //newNext ist der Teil der Url der für die nächsten 20 Pokemon steht
     next = [];                                          //next wird geleert
     next.push('?' + newNext);                           //so befindet sich immer ner neueste url-schnipsel im array
+}
+
+
+//Hinzufügen der geladenen Pokemon zum Array "loaded Pokemon"
+function addToCurrentPokemon(pokemon) {
+    currentPokemon = [];                                     //Array wird geleert damit nur die 20 aktuell zu ladenden Pokemon im Array sind
+    for (let i = 0; i < pokemon.length; i++) {
+        currentPokemon.push(pokemon[i])
+    };
 }
 
 
@@ -63,7 +72,7 @@ async function loadNewPokemonData() {
 
         renderPokemon(newPokemon);                              //Pokemon werden gerendert
         checkTypeForColor(newPokemon, newPokemon['id']);        //Bestimmung des Typs für Hintergrundfarbe
-        addToLoadedPokemon(newPokemon);
+        addToLoadedPokemon(newPokemon);                         //Pokemon werden dem Array geladene Pokemon hinzugefügt
     }
 }
 
@@ -74,7 +83,7 @@ function addToLoadedPokemon(newPokemon) {
 }
 
 
-//Hilfsfunktion um die Anfangsbuchstaben groß zu schreiben (in der API sind si klein)
+//Hilfsfunktion um die Anfangsbuchstaben der Namen groß zu schreiben (in der API sind sie klein)
 function renderPokemon(newPokemon) {
     let firstLetter = newPokemon['name'].charAt(0);
     let firstLetterCap = firstLetter.toUpperCase();
@@ -101,24 +110,16 @@ function removeScrollEvent() {
 //Anzeigen des Loaders
 function showLoader() {
     document.getElementById('loader').classList.remove('d-none');
-    document.getElementById('loader-container').style = 'z-index: 99;';
+    document.getElementById('loader-container').style = 'z-index: 99';
 }
 
 
 //Verbergen des Loaders
 function hideLoader() {
     document.getElementById('loader').classList.add('d-none');
-    document.getElementById('loader-container').style = 'z-index: -1;';
+    document.getElementById('loader-container').style = 'z-index: -1';
 }
 
-
-//Hinzufügen der geladenen Pokemon zum Array "loaded Pokemon"
-function addToCurrentPokemon(pokemon) {
-    currentPokemon = [];
-    for (let i = 0; i < pokemon.length; i++) {
-        currentPokemon.push(pokemon[i])
-    };
-}
 
 
 //Auswahl der richtigen Hintergrundfarbe nach Typ
@@ -132,17 +133,17 @@ function checkTypeForColor(newPokemon, id) {
 function filterPokemon() {
     let search = document.getElementById('search').value;
     search = search.toLowerCase();
-    document.getElementById('pokemon').innerHTML = '';
-    loadSearchedPokemon(search);
+    document.getElementById('pokemon').innerHTML = '';                  //Container mit den Pokemon wird geleert
+    loadSearchedPokemon(search);                                        //Anschließend werden die der Suche entsprechenden Pokemon geladen
 }
 
 
 //Laden der gesuchten Pokemon
 function loadSearchedPokemon(search) {
-    for (let i = 0; i < loadedPokemon.length; i++) {
+    for (let i = 0; i < loadedPokemon.length; i++) {                        //für die Suche wir das Array loaded Pokemon durchsucht
         let pokemon = loadedPokemon[i];
-        if (pokemon['species']['name'].toLowerCase().includes(search)) {
-            renderPokemon(pokemon, i);
+        if (pokemon['species']['name'].toLowerCase().includes(search)) {    //Wenn die Suche mit teilen eines Names übereistimmt wird das
+            renderPokemon(pokemon, i);                                      //Pokemon gerendert
             checkTypeForColor(pokemon, pokemon['id']);
         }
     }
@@ -152,44 +153,46 @@ function loadSearchedPokemon(search) {
 //Öffnen des Statusfenster eines Pokemon
 function openStats(id) {
     currentId = id;
-    loadStatsContainer(id);
-    loadPokemonImg(id);
+    let pokemon = loadedPokemon[id - 1];
+    let name = pokemon['types'][0]['type']['name'];        //Da ein Array bei 0 zu zählen beginnt muss die Pokemon id um 1 verringert werden
+    loadStatsContainer(name);
+    loadPokemonImg(pokemon);
     showArrows(id);
-    loadNameCapizalized(id);
+    loadNameCapitalized(pokemon);
     addPokemonNumber(id);
-    renderStatsTypes(loadedPokemon[id - 1]);
-    loadAbout(loadedPokemon[id - 1]);
-    loadBaseStats(loadedPokemon[id - 1]);
-    loadMoves(loadedPokemon[id - 1]);
+    renderStatsTypes(pokemon);
+    loadAbout(pokemon);
+    loadBaseStats(pokemon, name);
+    loadMoves(pokemon);
 }
 
 
-//Laden des Fensters mit den Stats eines Pokemon
-function loadStatsContainer(id) {
-    document.getElementById('poke-stats-container').className = '';
-    document.getElementById('poke-stats-container').classList.add('poke-stats-container');
-    document.getElementById('poke-stats-container').classList.add('show-stats');
+//Laden des Containers mit den Stats eines Pokemon
+function loadStatsContainer(name) {
+    document.getElementById('poke-stats-container').className = '';                                 //entfernt alle Klassen damit erneut eine Hintergrundfarbe bestimmt werden kann
+    document.getElementById('poke-stats-container').classList.add('poke-stats-container');          //fügt die Standardklasse wieder hinzu
+    document.getElementById('poke-stats-container').classList.add('show-stats');                    //Klasse sorgt für ins Bild sliden des Containers
 
-    let type = loadedPokemon[id - 1]['types'][0]['type']['name'];
-    document.getElementById('poke-stats-container').classList.add('bg-' + type);
+    let type = name;
+    document.getElementById('poke-stats-container').classList.add('bg-' + type);                    //Bestimmung der Hintergrundfarbe
 
-    document.getElementById('poke-stats-bg').classList.add('show-stats-bg');
+    document.getElementById('poke-stats-bg').classList.add('show-stats-bg');                        //Hintergrund wird grau und unscharf
 
-    document.getElementById('body').classList.add('overflow-hidden');
+    document.getElementById('body').classList.add('overflow-hidden');                               //entfernt die Scrollbar des bodys
 }
 
 
 //Laden des Image des ausgewählten Pokemon
-function loadPokemonImg(id) {
-    document.getElementById('stat-img').src = `${loadedPokemon[id - 1]['sprites']['other']['official-artwork']['front_default']}`;
+function loadPokemonImg(pokemon) {
+    document.getElementById('stat-img').src = `${pokemon['sprites']['other']['official-artwork']['front_default']}`;
 }
 
 
 //Laden des Namen mit Großbuchstaben
-function loadNameCapizalized(id) {
-    let firstLetter = loadedPokemon[id - 1]['name'].charAt(0);
+function loadNameCapitalized(pokemon) {
+    let firstLetter = pokemon['name'].charAt(0);
     let firstLetterCap = firstLetter.toUpperCase();
-    let remainingLetters = loadedPokemon[id - 1]['name'].slice(1);
+    let remainingLetters = pokemon['name'].slice(1);
     let pokemonCapitalized = firstLetterCap + remainingLetters;
     document.getElementById('species').innerHTML = pokemonCapitalized;
 }
@@ -216,20 +219,10 @@ function openAbout() {
 
 //Laden der Stat section about
 function loadAbout(pokemon) {
-    document.getElementById('base-experience').innerHTML = `${pokemon['base_experience']}`;
-    let heightt = pokemon['height'];
-    let height = heightt / 10;
-    document.getElementById('height').innerHTML = height;
-    let weightt = pokemon['weight'];
-    let weight = weightt / 10;
-    document.getElementById('weight').innerHTML = weight;
-    document.getElementById('abilities').innerHTML = '';
-    for (let i = 0; i < pokemon['abilities'].length; i++) {
-        let ability = pokemon['abilities'][i];
-        document.getElementById('abilities').innerHTML += `
-        <span>${ability['ability']['name']}</span>
-        `;
-    }
+    loadBaseExperience(pokemon);                //rendert die base-experience
+    loadHeight(pokemon);                        //rendert die Höhe in m              
+    loadWeight(pokemon);                        //rendert das Gewicht in kg
+    loadAbilities(pokemon);                     //rendert die Fähigkeiten der Pokemon 
 }
 
 
@@ -246,17 +239,18 @@ function openBaseStats() {
 
 
 //Laden der Stat section Base Stats
-function loadBaseStats(pokemon) {
-    for (let i = 0; i < pokemon['stats'].length; i++) {
+function loadBaseStats(pokemon, name) {
+    for (let i = 0; i < pokemon['stats'].length; i++) {                                 //Geht durch das Array pokemon['stats']
 
-        let stat = pokemon['stats'][i]['base_stat'];
+        let stat = pokemon['stats'][i]['base_stat'];                                    //Definiert stat um es als länge wieder zu verwenden      
         document.getElementById('base-stat' + i).style = `width: ${stat}px;`
         document.getElementById('stat-number' + i).innerHTML = `${stat}`;
 
-        document.getElementById('base-stat' + i).className = '';
+        document.getElementById('base-stat' + i).className = '';                        //entfernt alle Klassen damit im Anschluss die Balken gefärbt werden können
         document.getElementById('base-stat' + i).classList.add('actual-progress');
-        let type = pokemon['types'][0]['type']['name'];
-        document.getElementById('base-stat' + i).classList.add('bg-' + type);
+
+        let type = name;
+        document.getElementById('base-stat' + i).classList.add('bg-' + type);          //färbt die Balken in der Farbe des Pokemon
     }
 }
 
@@ -277,9 +271,7 @@ function loadMoves(pokemon) {
     document.getElementById('moves').innerHTML = '';
     for (let i = 1; i < pokemon['moves'].length; i++) {
         let move = pokemon['moves'][i]['move']['name'];
-        document.getElementById('moves').innerHTML += `
-    <div class="move">${move}</div>
-    `;
+        renderMoves(move);
     }
 }
 
@@ -294,9 +286,9 @@ function closeStats() {
 
 //Anzeigen der Pfeile zum sliden
 function showArrows(id) {
-    if (id > 1) {
+    if (id > 1) {                                                                     //wenn die Id des Pokemon größer 1 ist soll der Pfeil slideLeft angezeigt werden
         document.getElementById('slide-left').classList.remove('d-none');
-    }
+    }                                                                                 //ebenfalls der Pfeil slideRight
     document.getElementById('slide-right').classList.remove('d-none');
 }
 
@@ -310,10 +302,10 @@ function hideArrows() {
 
 //Zum nächsten Pokemon wechseln
 async function slideRight() {
-    if (currentId == loadedPokemon.length) {
-        await loadPokemon();
+    if (currentId == loadedPokemon.length) {            //wenn beim sliden durch die Pokemon das Ende des Arrays erreicht ist
+        await loadPokemon();                            //werden weitere 20 Pokemon geladen
         currentId++;
-        openStats(currentId);
+        openStats(currentId);                           //Anschließend die Stats geladen
     } else {
         currentId++;
         openStats(currentId);
@@ -326,43 +318,7 @@ function slideLeft() {
     currentId--;
     openStats(currentId);
     if (currentId == 1) {
-        document.getElementById('slide-left').classList.add('d-none');
+        document.getElementById('slide-left').classList.add('d-none');          //wenn beim sliden nach links der Anfang erreicht ist wird der Pfeil slideLeft entfernt
     }
 }
 
-
-
-
-//Templates
-
-
-function renderPokemonHtml(newPokemon, pokemonCap) {
-    document.getElementById('pokemon').innerHTML += `
-    <div id="pokemon${newPokemon['id']}" class="pokemon" onclick="openStats(${newPokemon['id']})">
-            <span>${pokemonCap}</span>
-        <div id="types${newPokemon['id']}">
-        </div>
-        <img class="pokeball-img" src="img/pokeball.jpg">
-        <img class="pokemon-img" src="${newPokemon['sprites']['other']['official-artwork']['front_default']}">
-    </div>
-    `;
-}
-
-function renderTypeHtml(newPokemon) {
-    for (let i = 0; i < newPokemon['types'].length; i++) {
-        const type = newPokemon['types'][i];
-        document.getElementById('types' + newPokemon['id']).innerHTML += `
-    <div><div class="type-container">${type['type']['name']}</div></div>
-    `;
-    }
-}
-
-function renderStatsTypes(pokemon) {
-    document.getElementById('stat-type-container').innerHTML = '';
-    for (let i = 0; i < pokemon['types'].length; i++) {
-        const type = pokemon['types'][i];
-        document.getElementById('stat-type-container').innerHTML += `
-    <div><div class="type-container">${type['type']['name']}</div></div>
-    `;
-    }
-}
