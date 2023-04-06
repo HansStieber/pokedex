@@ -5,12 +5,17 @@ let next = [];
 let currentId;
 
 
-//Laden von 20 Pokemon nach laden des bodys (onload) und anschließend nach scrollen zum unteren Ende der Seite (eventlistner)
-function checkEndOfPage() {
+//Laden von 20 Pokemon nach laden des bodys (onload) und anschließend nach scrollen zum unteren Ende der Seite (eventlistner). Wenn die Seite nicht scrollbar ist werden direkt
+//weitere Pokemon geladen.
+async function checkEndOfPage() {
     let scrollPos = window.innerHeight + window.scrollY;
     let scrollLimitBottom = document.body.scrollHeight - 200;
+    console.log(scrollLimitBottom)
     if (closeToEndOfPage(scrollPos, scrollLimitBottom)) {
-        loadPokemon();
+        await loadPokemon();
+        if (scrollLimitBottom <= 0) {
+            loadPokemon();
+        }
     }
 }
 
@@ -28,7 +33,8 @@ async function loadPokemon() {
     await loadNewPokemonBaseData();         //Laden der Base Daten (Name und url)
     await loadNewPokemonData();                   //Pokemon werden geladen und geredert
     addScrollEvent();
-    hideLoader();                     //hinzufügen eines Scrollevents
+    hideLoader();      //hinzufügen eines Scrollevents
+
 }
 
 
@@ -40,7 +46,7 @@ async function loadNewPokemonBaseData() {
     let newPokemon = await response.json();
     defineNextPokemon(newPokemon);                  //festlegen der nächsten 20 Pokemon
     let pokemon = newPokemon['results'];
-    addToCurrentPokemon(pokemon);                    //Hinzufügen zum Array CurrentPokemon
+    addToCurrentPokemon(pokemon);             //Hinzufügen zum Array CurrentPokemon
 }
 
 
